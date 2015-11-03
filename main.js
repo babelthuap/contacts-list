@@ -3,6 +3,7 @@
 $(document).ready(() => {
 
   // initialize page
+  let sortBy = 0;
   let list = localStorage.list ? JSON.parse(localStorage.list) : [];
   printList();
   $('#name').focus();
@@ -10,10 +11,18 @@ $(document).ready(() => {
 
   $('#clear').click(() => { updateList([]); });
   $('#add').click(() => { addContact(); });
+  $('table').on('click', 'td', updateContact);
+  $('.header').click(changeSortBy);
   $('.new').on('keypress', (e) => {
     if (e.charCode === 13) addContact();
   });
-  $('table').on('click', 'td', updateContact);
+
+  function changeSortBy() {
+    $('.header:nth-of-type(' + (sortBy + 1) + ') h4').find('span').remove();
+    sortBy = $(this).prevAll().length;
+    $('.header:nth-of-type(' + (sortBy + 1) + ') h4').append( $('<span>').addClass("caret") );
+    printList();
+  }
 
   function addContact() {
     let name = $('#name').val();
@@ -34,6 +43,10 @@ $(document).ready(() => {
 
   function printList() {
     $('tr').not('.permanent').remove();
+
+    list.sort(function(a, b) {
+      return a[sortBy] > b[sortBy];
+    });
 
     let newTableRows = [];
     list.forEach((person, i) => {
@@ -59,29 +72,8 @@ $(document).ready(() => {
   function updateContact() {
     let indexToUpdate = $(this).closest('tr').attr('index');
     let fieldToUpdate = $(this).prevAll().length;
-
-    console.log( 'old value:', list[indexToUpdate][fieldToUpdate] );
-
-
     let newValue = prompt('New Value:', $(this).text());
     if (newValue) list[indexToUpdate][fieldToUpdate] = newValue;
     printList();
   }
-
 })
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
