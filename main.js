@@ -18,9 +18,9 @@ $(document).ready(() => {
   });
 
   function changeSortBy() {
-    $('.header:nth-of-type(' + (sortBy + 1) + ') h4').find('span').remove();
     sortBy = $(this).prevAll().length;
-    $('.header:nth-of-type(' + (sortBy + 1) + ') h4').append( $('<span>').addClass("caret") );
+    $('.header:nth-of-type(' + (sortBy + 1) + ') h4').append( $('#caret') );
+    
     printList();
   }
 
@@ -73,7 +73,9 @@ $(document).ready(() => {
     let indexToUpdate = $(this).closest('tr').attr('index');
     let fieldToUpdate = $(this).prevAll().length;
     let newValue = prompt('New Value:', $(this).text());
-    if (newValue) list[indexToUpdate][fieldToUpdate] = newValue;
-    printList();
+    if (newValue) {
+      list[indexToUpdate][fieldToUpdate] = newValue;
+      updateList(list);
+    }
   }
 })
