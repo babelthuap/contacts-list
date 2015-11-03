@@ -1,0 +1,8 @@
+.header span {
+  font-size: 18px;
+}
+
+input, .fa-trash-o {
+  color: #272b30;
+  font-weight: normal;
+}
