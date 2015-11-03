@@ -2,34 +2,34 @@
 
 $(document).ready(() => {
 
-  // initialize
-  let list = initList();
+  // initialize page
+  let list = localStorage.list ? JSON.parse(localStorage.list) : [];
   printList();
+  $('#name').focus();
 
-  $('#clear').click(() => { updateList([]); })
-  $('#add').click(() => { addContact(); })
+
+  $('#clear').click(() => { updateList([]); });
+  $('#add').click(() => { addContact(); });
   $('.new').on('keypress', (e) => {
     if (e.charCode === 13) addContact();
   });
+  $('table').on('click', 'td', updateContact);
 
   function addContact() {
     let name = $('#name').val();
     let email = $('#email').val();
     let phone = $('#phone').val();
     let twitter = $('#twitter').val();
-    updateList( list.concat([{name: name, email: email, phone: phone, twitter: twitter}]) );
+    updateList( list.concat([[name, email, phone, twitter]]) );
     $('#name').focus();
+
+    $('#phone').val( Math.floor(Math.random() * 9000000000) + 1000000000 ); // DEBUG
   }
 
   function removeContact() {
     let indexToRemove = $(this).closest('tr').attr('index');
     list.splice(indexToRemove, 1);
     updateList(list);
-  }
-
-  function initList() {
-    // fetch the stored list from local storage
-    return localStorage.list ? JSON.parse(localStorage.list) : [];
   }
 
   function printList() {
@@ -39,12 +39,12 @@ $(document).ready(() => {
     list.forEach((person, i) => {
       // create table row entry representing that person
       let $removeButton = $('<button>').text('X').click(removeContact);
-      let $entry = $('<tr>').append( $('<td>').text(person.name) )
-                            .append( $('<td>').text(person.email) )
-                            .append( $('<td>').text(person.phone) )
-                            .append( $('<td>').text(person.twitter) )
+      let $entry = $('<tr>').append( $('<td>').text(person[0]) )
+                            .append( $('<td>').text(person[1]) )
+                            .append( $('<td>').text(person[2]) )
+                            .append( $('<td>').text(person[3]) )
                             .append( $('<td>').append($removeButton) )
-                            .attr('index', i);
+                            .attr('index', i); // used to identify the contact entry
       newTableRows.push($entry);
     })
     $('#contacts').append(newTableRows);
@@ -56,4 +56,32 @@ $(document).ready(() => {
     printList();
   }
 
+  function updateContact() {
+    let indexToUpdate = $(this).closest('tr').attr('index');
+    let fieldToUpdate = $(this).prevAll().length;
+
+    console.log( 'old value:', list[indexToUpdate][fieldToUpdate] );
+
+
+    let newValue = prompt('New Value:', $(this).text());
+    if (newValue) list[indexToUpdate][fieldToUpdate] = newValue;
+    printList();
+  }
+
 })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
