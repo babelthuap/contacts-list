@@ -32,11 +32,13 @@ $(document).ready(() => {
 
   function addContact() {
     let name = $('#name').val();
-    let email = $('#email').val();
-    let phone = $('#phone').val();
-    let twitter = $('#twitter').val();
-    updateList( list.concat([[name, email, phone, twitter]]) );
-    $('.permanent input').val('');
+    if (name) {
+      let email = $('#email').val();
+      let phone = $('#phone').val();
+      let twitter = $('#twitter').val();
+      updateList( list.concat([[name, email, phone, twitter]]) );
+      $('.permanent input').val('');
+    }
     $('#name').focus();
   }
 
