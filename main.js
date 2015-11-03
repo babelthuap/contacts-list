@@ -1,7 +1,6 @@
 'use strict';
 
 $(document).ready(() => {
-
   // initialize page
   let sortBy = 0;
   let reverseSort = false;
@@ -39,8 +38,6 @@ $(document).ready(() => {
     updateList( list.concat([[name, email, phone, twitter]]) );
     $('.permanent input').val('');
     $('#name').focus();
-
-    // $('#phone').val( Math.floor(Math.random() * 9000000000) + 1000000000 ); // DEBUG
   }
 
   function removeContact() {
@@ -83,10 +80,15 @@ $(document).ready(() => {
     printList();
   }
 
+  let fields = ['name', 'email', 'phone number', 'Twitter handle']
   function updateContact() {
     let indexToUpdate = $(this).closest('tr').attr('index');
     let fieldToUpdate = $(this).prevAll().length;
-    let newValue = prompt('New Value:', $(this).text());
+
+    let name = list[indexToUpdate][0];
+    let possesive = name[name.length - 1] === 's' ? "'" : "'s";
+    let msg = 'Change ' + name + possesive + ' ' + fields[fieldToUpdate] + ' to:';
+    let newValue = prompt(msg, $(this).text());
 
     if (newValue) {
       list[indexToUpdate][fieldToUpdate] = newValue;

@@ -7,7 +7,7 @@ input, .fa-trash-o {
   font-weight: normal;
 }
 
-.header, td {
+.header, td:not(:last-child) {
   cursor: pointer;
 }
 
