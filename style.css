@@ -6,3 +6,7 @@ input, .fa-trash-o {
   color: #272b30;
   font-weight: normal;
 }
+
+.header, td {
+  cursor: pointer;
+}

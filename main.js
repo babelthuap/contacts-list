@@ -45,6 +45,11 @@ $(document).ready(() => {
 
   function removeContact() {
     let indexToRemove = $(this).closest('tr').attr('index');
+    // make it easy to undo a deletion
+    $('#name').val( list[indexToRemove][0] );
+    $('#email').val( list[indexToRemove][1] );
+    $('#phone').val( list[indexToRemove][2] );
+    $('#twitter').val( list[indexToRemove][3] );
     list.splice(indexToRemove, 1);
     updateList(list);
   }
