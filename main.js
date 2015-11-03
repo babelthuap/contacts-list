@@ -2,19 +2,15 @@
 
 $(document).ready(() => {
 
+  // initialize
   let list = initList();
   printList();
-  console.log('list loaded:', JSON.stringify(list)); // DEBUG
-  //console.log('first person:', list[0].name); // DEBUG
-  
 
-  $('#clear').click(() => {
-    updateList( [] );
-  })
-
-  $('#add').click(() => {
-    addContact();
-  })
+  $('#clear').click(() => { updateList([]); })
+  $('#add').click(() => { addContact(); })
+  $('.new').on('keypress', (e) => {
+    if (e.charCode === 13) addContact();
+  });
 
   function addContact() {
     let name = $('#name').val();
@@ -22,10 +18,13 @@ $(document).ready(() => {
     let phone = $('#phone').val();
     let twitter = $('#twitter').val();
     updateList( list.concat([{name: name, email: email, phone: phone, twitter: twitter}]) );
+    $('#name').focus();
   }
 
   function removeContact() {
-    // remove contact from list
+    let indexToRemove = $(this).closest('tr').attr('index');
+    list.splice(indexToRemove, 1);
+    updateList(list);
   }
 
   function initList() {
@@ -37,14 +36,15 @@ $(document).ready(() => {
     $('tr').not('.permanent').remove();
 
     let newTableRows = [];
-    list.forEach((person) => {
+    list.forEach((person, i) => {
       // create table row entry representing that person
-      let $removeButton = $('<button>').text('X').click(removeContact());
+      let $removeButton = $('<button>').text('X').click(removeContact);
       let $entry = $('<tr>').append( $('<td>').text(person.name) )
                             .append( $('<td>').text(person.email) )
                             .append( $('<td>').text(person.phone) )
                             .append( $('<td>').text(person.twitter) )
-                            .append( $('<td>').append($removeButton) );
+                            .append( $('<td>').append($removeButton) )
+                            .attr('index', i);
       newTableRows.push($entry);
     })
     $('#contacts').append(newTableRows);
