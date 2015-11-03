@@ -10,3 +10,7 @@ input, .fa-trash-o {
 .header, td {
   cursor: pointer;
 }
+
+.clickable:hover {
+  background-color: rgba(0,0,0,0.5);
+}

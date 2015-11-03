@@ -71,6 +71,7 @@ $(document).ready(() => {
                             .append( $('<td>').text(person[3]) )
                             .append( $('<td>').append($removeButton) )
                             .attr('index', i); // used to identify the contact entry
+      $entry.find('td').not(':last-child').addClass('clickable');
       newTableRows.push($entry);
     })
     $('#contacts').append(newTableRows);
